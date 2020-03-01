@@ -1,0 +1,61 @@
+body {
+  height: 100vh;
+  background-size: 100% 100%;
+  opacity: 1;
+  font-size: 24px;
+}
+.fileInput {
+  width: 210px;
+  height: 30px;
+  margin: 10px 0;
+  display: block;
+}
+.submitBtn {
+  width: 80px;
+  height: 30px;
+  cursor: pointer;
+  margin: 10px 0;
+}
+.resultArea {
+  font-size: 14px;
+}
+.resultArea_item {
+  display: inline-block;
+  color: green;
+  margin: 10px;
+  cursor: pointer;
+}
+.resultArea_item:hover {
+  color: lightpink;
+}
+.resultArea table {
+  width: 100%;
+  border: 1px solid #ddd;
+  border-collapse: collapse;
+}
+.resultArea table thead {
+  background: gray;
+  color: white;
+  line-height: 60px;
+}
+.resultArea table tbody {
+  color: #999;
+}
+.resultArea table th,
+.resultArea table td {
+  border: 1px solid #ddd;
+  padding: 3px;
+}
+.textCenter {
+  text-align: center;
+}
+.textRight {
+  text-align: right;
+}
+.textLeft {
+  text-align: left;
+}
+.handleFilePreview {
+  color: green;
+  cursor: pointer;
+}

@@ -1,0 +1,72 @@
+body {
+  height: 100vh;
+  // background: url(../assets/1.png) no-repeat center;
+  background-size: 100% 100%;
+  opacity: 1;
+  font-size: 24px;
+}
+
+.fileInput {
+  width: 210px;
+  height: 30px;
+  margin: 10px 0;
+  display: block;
+}
+
+.submitBtn {
+  width: 80px;
+  height: 30px;
+  cursor: pointer;
+  margin: 10px 0;
+}
+
+.resultArea {
+  font-size: 14px;
+  &_item {
+    display: inline-block;
+    color: green;
+    margin: 10px;
+    cursor: pointer;
+
+    &:hover{
+      color: lightpink;
+    }
+  }
+  table{
+    width: 100%;
+    border: 1px solid #ddd;
+    border-collapse: collapse;
+
+    thead{
+      background: gray;
+      color: white;
+      line-height: 60px;
+    }
+
+    tbody{
+      color: #999;
+    }
+
+    th, td{
+      border: 1px solid #ddd;
+      padding: 3px;
+    }
+  }
+}
+
+.textCenter{
+  text-align: center;
+}
+
+.textRight{
+  text-align: right;
+}
+
+.textLeft{
+  text-align: left;
+}
+
+.handleFilePreview{
+  color: green;
+  cursor: pointer;
+}
