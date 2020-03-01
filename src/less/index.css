@@ -5,11 +5,12 @@ body {
   font-size: 24px;
 }
 .fileInput {
-  width: 210px;
+  width: 320px;
   height: 30px;
   margin: 10px 0;
   display: block;
   outline: 1px solid green;
+  font-size: 16px;
 }
 .submitBtn {
   width: 80px;
