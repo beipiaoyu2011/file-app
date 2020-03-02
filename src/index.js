@@ -62,7 +62,7 @@ const createWindow = () => {
     }
   ])
 
-  app.dock.setMenu(dockMenu)
+  // app.dock.setMenu(dockMenu)
 
 };
 
