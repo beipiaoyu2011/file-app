@@ -51,18 +51,28 @@ const handleReadEvent = () => {
 					arr.push(obj);
 					try {
 						const fileInfo = fs.statSync(obj.path);
+						const fileType = mineType.lookup(obj.path);
+						console.log(fileType);
 						let data = fs.readFileSync(obj.path);
 						data = Buffer.from(data).toString('base64');
-						obj.base64Url = 'data:' + mineType.lookup(obj.path) + ';base64,' + data;
-						obj.size = fileInfo.size ? Math.round(fileInfo.size / 1024) + " KB" : 0;
+						obj.base64Url = 'data:' + fileType + ';base64,' + data;
+						obj.size = fileInfo.size ? Math.ceil(fileInfo.size / 1024) + " KB" : 0;
 						obj.date = fileInfo.birthtime ? new Date(fileInfo.birthtime).format('yyyy-MM-dd hh:mm:ss') : '';
 						obj.isFile = fileInfo.isFile();
-						// uploadFile(obj.base64Url);
-						// const file = getMultiplePartFile(obj.base64Url);
-						allUpload.push({
-							name: obj.name,
-							base64Url: obj.base64Url
-						});
+						// 判断是否已经上传
+						let localData = localStorage.getItem('recordList');
+						localData = localData ? JSON.parse(localData) : [];
+						const isExist = localData.find(h => h.name == obj.name);
+						if (!isExist && obj.isFile && fileType.includes('image')) {
+							// 处理
+							allUpload.push({
+								name: obj.name,
+								base64Url: obj.base64Url
+							});
+						} else {
+							obj.status = 1;
+							obj.fileUrl = isExist.url;
+						}
 					} catch (error) { }
 					// str += `<div class="resultArea_item" path="${folderPath.value}/${m}">${m}</div>`
 				});
@@ -70,23 +80,11 @@ const handleReadEvent = () => {
 				arr.sort(function (a, b) {
 					return new Date(b.date).getTime() - new Date(a.date).getTime();
 				})
-				arr.forEach((n, i) => {
-					const fileTd = n.isFile ? `<td class="textCenter handleFilePreview" path="${n.path}">点击预览</td>` : `<td class="textCenter">--</td>`
-					str += `<tr>
-          <td class="textCenter">${i + 1}</td>
-          <td>${n.name}</td>
-          <td>${n.date}</td>
-          <td>${n.path}</td>
-          <td class="textCenter">${n.isFile ? n.size : '--'}</td>
-          <td class="textCenter">${n.isFile ? (n.status == 0 ? "未上传" : "已上传") : '--'}</td>
-          ${fileTd}
-          </tr>`
-				});
-
+				// 渲染
+				renderHtml(arr);
 				// 统一上传
-				handleAllFileUpload(allUpload);
+				if (allUpload.length) handleAllFileUpload(allUpload);
 			}
-			resultDom.getElementsByTagName('tbody')[0].innerHTML = str;
 		} catch (error) {
 			resultDom.getElementsByTagName('tbody')[0].innerHTML = `<tr><td class="textCenter error" colspan="7">${error}</td></tr>`;
 		}
@@ -102,7 +100,7 @@ document.addEventListener("DOMContentLoaded", function () {
 // 定时
 setInterval(() => {
 	handleReadEvent();
-}, 60 * 1000);
+}, 120 * 1000);
 
 // 所有点击事件
 function handleAllEvent() {
@@ -140,10 +138,29 @@ async function uploadFile(base64Url, name, length) {
 			url: responseData.url
 		});
 		if (resultUrl.length == length) {
-			// console.log(resultUrl);
 			refreshStatus(resultUrl);
+			recordUpload(resultUrl);
 		}
 	}
+}
+
+// 渲染
+function renderHtml(arr) {
+	let str = '';
+	arr.forEach((n, i) => {
+		const fileTd = n.isFile ? `<td class="textCenter handleFilePreview" path="${n.base64Url}">本地预览</td>` : `<td class="textCenter">--</td>`
+		const uploadedTd = n.isFile ? `<span class="handleFilePreview" path="${n.fileUrl}">已上传, 预览</td>` : ``
+		str += `<tr>
+		<td class="textCenter">${i + 1}</td>
+		<td>${n.name}</td>
+		<td>${n.date}</td>
+		<td>${n.path}</td>
+		<td class="textCenter">${n.isFile ? n.size : '--'}</td>
+		<td class="textCenter">${n.isFile ? (n.status == 0 ? "未上传" : uploadedTd) : '--'}</td>
+		${fileTd}
+		</tr>`
+	});
+	resultDom.getElementsByTagName('tbody')[0].innerHTML = str;
 }
 
 // 重新
@@ -155,18 +172,25 @@ function refreshStatus(resultUrl) {
 			arr[findArrIndex].fileUrl = n.url;
 		}
 	});
-	let str = '';
-	arr.forEach((n, i) => {
-		const fileTd = n.isFile ? `<td class="textCenter handleFilePreview" path="${n.path}">点击预览</td>` : `<td class="textCenter">--</td>`
-		str += `<tr>
-		<td class="textCenter">${i + 1}</td>
-		<td>${n.name}</td>
-		<td>${n.date}</td>
-		<td>${n.path}</td>
-		<td class="textCenter">${n.isFile ? n.size : '--'}</td>
-		<td class="textCenter">${n.isFile ? (n.status == 0 ? "未上传" : "已上传") : '--'}</td>
-		${fileTd}
-		</tr>`
+	renderHtml(arr);
+}
+
+// 本地记录哪些文件已经上传
+function recordUpload(arr) {
+	if (!arr) return;
+	let localData = localStorage.getItem('recordList');
+	localData = localData ? JSON.parse(localData) : [];
+	// 去重
+	arr.forEach(n => {
+		const obj = {
+			name: n.name,
+			url: n.url
+		}
+		const isExist = localData.find(m => m && m.name == n.name);
+		if (!isExist) {
+			localData.push(obj);
+		}
 	});
-	resultDom.getElementsByTagName('tbody')[0].innerHTML = str;
+	localStorage.setItem('recordList', JSON.stringify(localData));
+
 }
