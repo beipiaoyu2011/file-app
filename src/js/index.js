@@ -11,9 +11,15 @@ const defaultPath = localStorage.getItem('readPath');
 if (defaultPath) {
 	folderPath.value = defaultPath;
 }
+// 上传路径
+const uploadUrl = 'http://192.168.66.209:8280/knowledgeInter/web/upload/base64';
 // 处理文件
+let resultUrl = [];
+let arr = [];
 const handleReadEvent = () => {
-
+	const allUpload = [];
+	resultUrl = [];
+	arr = [];
 	if (folderPath && folderPath.value) {
 		// 判断是否是文件夹
 		try {
@@ -30,7 +36,6 @@ const handleReadEvent = () => {
 			localStorage.setItem('readPath', folderPath.value);
 			console.log(root);
 			let str = '';
-			const arr = [];
 			if (root && root.length) {
 				root.forEach(m => {
 					const obj = {
@@ -40,7 +45,8 @@ const handleReadEvent = () => {
 						status: 0,
 						date: '',
 						isFile: false,
-						base64Url: ''
+						base64Url: '',
+						fileUrl: '',
 					}
 					arr.push(obj);
 					try {
@@ -51,7 +57,12 @@ const handleReadEvent = () => {
 						obj.size = fileInfo.size ? Math.round(fileInfo.size / 1024) + " KB" : 0;
 						obj.date = fileInfo.birthtime ? new Date(fileInfo.birthtime).format('yyyy-MM-dd hh:mm:ss') : '';
 						obj.isFile = fileInfo.isFile();
-						console.log(obj.base64);
+						// uploadFile(obj.base64Url);
+						// const file = getMultiplePartFile(obj.base64Url);
+						allUpload.push({
+							name: obj.name,
+							base64Url: obj.base64Url
+						});
 					} catch (error) { }
 					// str += `<div class="resultArea_item" path="${folderPath.value}/${m}">${m}</div>`
 				});
@@ -71,6 +82,9 @@ const handleReadEvent = () => {
           ${fileTd}
           </tr>`
 				});
+
+				// 统一上传
+				handleAllFileUpload(allUpload);
 			}
 			resultDom.getElementsByTagName('tbody')[0].innerHTML = str;
 		} catch (error) {
@@ -89,6 +103,7 @@ document.addEventListener("DOMContentLoaded", function () {
 setInterval(() => {
 	handleReadEvent();
 }, 60 * 1000);
+
 // 所有点击事件
 function handleAllEvent() {
 	// 点击预览
@@ -99,4 +114,59 @@ function handleAllEvent() {
 			window.open(path);
 		}
 	});
+}
+
+// 统一处理文件上传
+function handleAllFileUpload(allUpload) {
+	if (!allUpload) return;
+	for (let index = 0; index < allUpload.length; index++) {
+		const element = allUpload[index];
+		uploadFile(element.base64Url, element.name, allUpload.length);
+	}
+}
+
+// 图片上传
+async function uploadFile(base64Url, name, length) {
+	const file = getMultiplePartFile(base64Url);
+	const formData = new FormData();
+	formData.append('file', file);
+	const responseData = await fetch("http://111.200.244.194:28083/upload/file", {
+		method: "POST",
+		body: formData
+	}).then(res => res.json());
+	if (responseData) {
+		resultUrl.push({
+			name: name,
+			url: responseData.url
+		});
+		if (resultUrl.length == length) {
+			// console.log(resultUrl);
+			refreshStatus(resultUrl);
+		}
+	}
+}
+
+// 重新
+function refreshStatus(resultUrl) {
+	resultUrl.forEach(n => {
+		const findArrIndex = arr.findIndex(m => m.name == n.name);
+		if (!isNaN(findArrIndex)) {
+			arr[findArrIndex].status = 1;
+			arr[findArrIndex].fileUrl = n.url;
+		}
+	});
+	let str = '';
+	arr.forEach((n, i) => {
+		const fileTd = n.isFile ? `<td class="textCenter handleFilePreview" path="${n.path}">点击预览</td>` : `<td class="textCenter">--</td>`
+		str += `<tr>
+		<td class="textCenter">${i + 1}</td>
+		<td>${n.name}</td>
+		<td>${n.date}</td>
+		<td>${n.path}</td>
+		<td class="textCenter">${n.isFile ? n.size : '--'}</td>
+		<td class="textCenter">${n.isFile ? (n.status == 0 ? "未上传" : "已上传") : '--'}</td>
+		${fileTd}
+		</tr>`
+	});
+	resultDom.getElementsByTagName('tbody')[0].innerHTML = str;
 }
