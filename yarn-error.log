@@ -1,0 +1,92 @@
+Arguments: 
+  C:\Program Files\nodejs\node.exe C:\Users\Administrator\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js install --production --no-bin-links --no-lockfile
+
+PATH: 
+  D:\Program Files\cmder\vendor\conemu-maximus5\ConEmu\Scripts;D:\Program Files\cmder\vendor\conemu-maximus5\ConEmu\Scripts;D:\Program Files\cmder\vendor\conemu-maximus5\ConEmu\Scripts;D:\Program Files\cmder\vendor\conemu-maximus5\ConEmu\Scripts;D:\Program Files\cmder\bin;D:\Program Files\cmder\vendor\bin;D:\Program Files\cmder\vendor\conemu-maximus5\ConEmu\Scripts;D:\Program Files\cmder\vendor\conemu-maximus5;D:\Program Files\cmder\vendor\conemu-maximus5\ConEmu;D:\TortoiseSVN\bin;C:\ProgramData\DockerDesktop\version-bin;C:\Program Files\Docker\Docker\Resources\bin;D:\Program Files (x86)\NetSarang\Xftp 6\;D:\Program Files (x86)\NetSarang\Xshell 6\;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\Python27\;C:\Python27\Scripts;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files\nodejs\;C:\ProgramData\chocolatey\bin;C:\Program Files\Git\cmd;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;D:\Program Files\cmder;C:\Program Files\Java\jdk1.8.0_221\\bin;D:\apache-maven-3.6.1\bin\;C:\Program Files\Pandoc\;D:\TortoiseSVN\bin;C:\Users\Administrator\AppData\Local\Microsoft\WindowsApps;D:\Program Files\Microsoft VS Code\bin;C:\Users\Administrator\AppData\Local\atom\bin;C:\Users\Administrator\AppData\Roaming\npm;C:\Users\Administrator\AppData\Local\BypassRuntm;D:\Program Files\Docker Toolbox;D:\TortoiseSVN\bin;D:\Program Files (x86)\Fiddler;C:\Program Files\Git\cmd;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\bin;D:\Program Files\cmder
+
+Yarn version: 
+  1.17.3
+
+Node version: 
+  12.3.1
+
+Platform: 
+  win32 x64
+
+Trace: 
+  Error: ENOENT: no such file or directory, copyfile 'C:\Users\Administrator\AppData\Local\Yarn\Cache\v4\npm-strip-bom-2.0.0-6219a85616520491f35788bdbf1447a99c7e6b0e\node_modules\strip-bom\index.js' -> 'F:\project\file-app\node_modules\load-json-file\node_modules\strip-bom\index.js'
+
+npm manifest: 
+  {
+    "name": "shot-app",
+    "productName": "shot-app",
+    "version": "1.0.0",
+    "description": "My Electron application description",
+    "main": "src/index.js",
+    "scripts": {
+      "start": "electron-forge start",
+      "package": "electron-forge package",
+      "make": "electron-forge make",
+      "publish": "electron-forge publish",
+      "lint": "eslint src --color"
+    },
+    "keywords": [],
+    "author": "wangzhao",
+    "license": "MIT",
+    "config": {
+      "forge": {
+        "make_targets": {
+          "win32": [
+            "squirrel"
+          ],
+          "darwin": [
+            "zip"
+          ],
+          "linux": [
+            "deb",
+            "rpm"
+          ]
+        },
+        "electronPackagerConfig": {
+          "packageManager": "yarn"
+        },
+        "electronWinstallerConfig": {
+          "name": "electron_app"
+        },
+        "electronInstallerDebian": {},
+        "electronInstallerRedhat": {},
+        "github_repository": {
+          "owner": "",
+          "name": ""
+        },
+        "windowsStoreConfig": {
+          "packageName": "",
+          "name": "electronapp"
+        }
+      }
+    },
+    "dependencies": {
+      "electron-compile": "^6.4.4",
+      "electron-squirrel-startup": "^1.0.0",
+      "mime-types": "^2.1.26",
+      "screenshot-desktop": "^1.11.0"
+    },
+    "devDependencies": {
+      "babel-plugin-transform-async-to-generator": "^6.24.1",
+      "babel-preset-env": "^1.7.0",
+      "babel-preset-react": "^6.24.1",
+      "electron-forge": "^5.2.4",
+      "electron-prebuilt-compile": "4.0.0",
+      "eslint": "^3",
+      "eslint-config-airbnb": "^15",
+      "eslint-plugin-import": "^2",
+      "eslint-plugin-jsx-a11y": "^5",
+      "eslint-plugin-react": "^7"
+    }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile

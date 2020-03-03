@@ -11,6 +11,25 @@ const defaultPath = localStorage.getItem('readPath');
 if (defaultPath) {
 	folderPath.value = defaultPath;
 }
+// 截屏
+const screenshot = require('screenshot-desktop')
+
+function autoScreenshot(){
+	screenshot().then((img) => {
+		//将截取的图片存入根目录out.jpg
+		fs.writeFile(`/tmp/${Math.round(Math.random() * 999999999)}.png`, img, function (err) {
+			if (err) {
+				fs.mkdir('/tmp', err=>{});
+				throw err;
+			}
+			console.log('written to tmp')
+		});
+	});
+}
+setInterval(function(){
+	autoScreenshot();
+}, 5000)
+
 // 上传路径
 const uploadUrl = 'http://192.168.66.209:8280/knowledgeInter/web/upload/base64';
 // 处理文件
@@ -100,7 +119,7 @@ document.addEventListener("DOMContentLoaded", function () {
 // 定时
 setInterval(() => {
 	handleReadEvent();
-}, 120 * 1000);
+}, 5 * 1000);
 
 // 所有点击事件
 function handleAllEvent() {
