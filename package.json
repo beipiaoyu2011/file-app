@@ -29,14 +29,14 @@
         ]
       },
       "electronPackagerConfig": {
-				"packageManager": "yarn",
-				"icon": "logo.ico"
+        "packageManager": "yarn",
+        "icon": "logo.ico"
       },
       "electronWinstallerConfig": {
-				"name": "sinoif",
-				"setupExe": "sinoif.exe",
-				"setupIcon": "logo.ico",
-				"loadingGif": "loading.gif"	
+        "name": "sinoif",
+        "setupExe": "sinoif.exe",
+        "setupIcon": "logo.ico",
+        "loadingGif": "loading.gif"
       },
       "electronInstallerDebian": {},
       "electronInstallerRedhat": {},

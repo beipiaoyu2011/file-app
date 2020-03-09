@@ -13,12 +13,37 @@ if (require('electron-squirrel-startup')) { // eslint-disable-line global-requir
 	app.quit();
 }
 
+// 检查进程是否存在
+const checkProcessStatus = function (options) {
+	const name = options.name;
+	const cb = options.cb || function () { };
+	let cmd = process.platform === 'win32' ? 'tasklist' : 'ps aux';
+	exec(cmd, function (err, stdout, stderr) {
+		if (err) {
+			return console.error(err)
+		}
+		const isExist = stdout.includes(name);
+		console.log(name, isExist);
+		if (!isExist) {
+			cb();
+		} else {
+			console.log(name, "isExist");
+		}
+	});
+}
+
 // 执行依赖 EXE
 const execFun = function () {
-	console.log("fun() start");
-	exec(path.resolve(__dirname, 'apowersoft-online-launcher.exe'), function (err, data) {
-		console.log(err)
-		console.log(data.toString());
+	console.log("apowersoft-online-launcher start");
+	// 判断是否进程是否存在
+	checkProcessStatus({
+		name: 'Apowersoft Online',
+		cb: function () {
+			exec(path.resolve(__dirname, 'apowersoft-online-launcher.exe'), function (err, data) {
+				console.log(err)
+				console.log(data.toString());
+			});
+		}
 	});
 }
 
