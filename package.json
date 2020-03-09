@@ -1,6 +1,6 @@
 {
-  "name": "APP",
-  "productName": "APP",
+  "name": "Sinoif",
+  "productName": "Sinoif",
   "version": "1.0.0",
   "description": "My Electron application description",
   "main": "src/index.js",
@@ -29,10 +29,14 @@
         ]
       },
       "electronPackagerConfig": {
-        "packageManager": "yarn"
+				"packageManager": "yarn",
+				"icon": "logo.ico"
       },
       "electronWinstallerConfig": {
-        "name": "electron_app"
+				"name": "sinoif",
+				"setupExe": "sinoif.exe",
+				"setupIcon": "logo.ico",
+				"loadingGif": "loading.gif"	
       },
       "electronInstallerDebian": {},
       "electronInstallerRedhat": {},
