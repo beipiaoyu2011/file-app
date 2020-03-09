@@ -22,12 +22,13 @@ const createWindow = () => {
   });
 
   // and load the index.html of the app.
-  mainWindow.loadURL(`file://${__dirname}/index.html`);
+  // mainWindow.loadURL(`file://${__dirname}/index.html`);
+  mainWindow.loadURL(`file://${__dirname}/record.html`);
   // mainWindow.loadURL(`http://192.168.6.196`);
 
 
   // Open the DevTools.
-  mainWindow.webContents.openDevTools();
+  // mainWindow.webContents.openDevTools();
 
   // Emitted when the window is closed.
   mainWindow.on('closed', () => {
@@ -37,30 +38,30 @@ const createWindow = () => {
     mainWindow = null;
   });
 
-  let myNotification = new Notification({
-    title: 'test',
-    body: 'hello'
-  })
+  // let myNotification = new Notification({
+  //   title: 'test',
+  //   body: 'hello'
+  // })
 
-  myNotification.show();
+  // myNotification.show();
 
   // mac dock menu
-  const dockMenu = Menu.buildFromTemplate([{
-      label: 'New Window',
-      click() {
-        console.log('New Window')
-      }
-    }, {
-      label: 'New Window with Settings',
-      submenu: [{
-          label: 'Basic'
-        },
-        {
-          label: 'Pro'
-        }
-      ]
-    }
-  ])
+  // const dockMenu = Menu.buildFromTemplate([{
+  //     label: 'New Window',
+  //     click() {
+  //       console.log('New Window')
+  //     }
+  //   }, {
+  //     label: 'New Window with Settings',
+  //     submenu: [{
+  //         label: 'Basic'
+  //       },
+  //       {
+  //         label: 'Pro'
+  //       }
+  //     ]
+  //   }
+  // ])
 
   // app.dock.setMenu(dockMenu)
 

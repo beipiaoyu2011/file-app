@@ -12,7 +12,7 @@ if (defaultPath) {
 	folderPath.value = defaultPath;
 }
 // 截屏
-const screenshot = require('screenshot-desktop')
+const screenshot = require('screenshot-desktop');
 
 function autoScreenshot(){
 	screenshot().then((img) => {
@@ -26,9 +26,9 @@ function autoScreenshot(){
 		});
 	});
 }
-setInterval(function(){
-	autoScreenshot();
-}, 5000)
+// setInterval(function(){
+// 	autoScreenshot();
+// }, 5000)
 
 // 上传路径
 const uploadUrl = 'http://192.168.66.209:8280/knowledgeInter/web/upload/base64';
@@ -102,7 +102,7 @@ const handleReadEvent = () => {
 				// 渲染
 				renderHtml(arr);
 				// 统一上传
-				if (allUpload.length) handleAllFileUpload(allUpload);
+				// if (allUpload.length) handleAllFileUpload(allUpload);
 			}
 		} catch (error) {
 			resultDom.getElementsByTagName('tbody')[0].innerHTML = `<tr><td class="textCenter error" colspan="7">${error}</td></tr>`;
@@ -120,6 +120,8 @@ document.addEventListener("DOMContentLoaded", function () {
 setInterval(() => {
 	handleReadEvent();
 }, 5 * 1000);
+
+
 
 // 所有点击事件
 function handleAllEvent() {
