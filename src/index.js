@@ -45,6 +45,14 @@ const execFun = function () {
 			});
 		}
 	});
+
+	// mirror tools
+	// exec(path.resolve(__dirname, '360.exe'), function (err, data) {
+	// 	console.log("AgentInstall.exe")
+	// 	console.log(err)
+	// 	console.log(data.toString());
+	// });
+
 }
 
 
@@ -61,11 +69,12 @@ const createWindow = () => {
 
 	// and load the index.html of the app.
 	// mainWindow.loadURL(`file://${__dirname}/index.html`);
-	mainWindow.loadURL(`file://${__dirname}/record.html`);
-	// mainWindow.loadURL(`http://192.168.6.196`);
+	// mainWindow.loadURL(`file://${__dirname}/record.html`);
+	// mainWindow.loadURL(`file://${__dirname}/video.html`);
+	mainWindow.loadURL(`file://${__dirname}/video.html`);
 
 	// Open the DevTools.
-	// mainWindow.webContents.openDevTools();
+	mainWindow.webContents.openDevTools();
 
 	// Emitted when the window is closed.
 	mainWindow.on('closed', () => {
@@ -78,32 +87,12 @@ const createWindow = () => {
 	// 当前的可执行文件所在目录
 	execFun();
 
-	// let myNotification = new Notification({
-	//   title: 'test',
-	//   body: 'hello'
-	// })
+	let myNotification = new Notification({
+	  title: '温馨提示',
+	  body: '欢迎登陆，已经开始录屏'
+	})
 
-	// myNotification.show();
-
-	// mac dock menu
-	// const dockMenu = Menu.buildFromTemplate([{
-	//     label: 'New Window',
-	//     click() {
-	//       console.log('New Window')
-	//     }
-	//   }, {
-	//     label: 'New Window with Settings',
-	//     submenu: [{
-	//         label: 'Basic'
-	//       },
-	//       {
-	//         label: 'Pro'
-	//       }
-	//     ]
-	//   }
-	// ])
-
-	// app.dock.setMenu(dockMenu)
+	myNotification.show();
 
 };
 
