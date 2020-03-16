@@ -15,9 +15,12 @@ const readVideo = () => {
 	// }
 
 	try {
-		fs.readFile(videoPath, function(err, data){
-			console.log(data);
-		})
+		fs.readFile(videoPath, function (err, data) {
+			// console.log(data.toString());
+			let blob = new Blob(data, { type: 'video/mkv' })
+			console.log(URL.createObjectURL(blob), document.getElementById('video').src);
+			document.getElementById('video').src = URL.createObjectURL(blob);
+		});
 	} catch (e) {
 		console.log(e.code);
 		console.log(e.msg);

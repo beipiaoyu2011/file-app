@@ -87,20 +87,15 @@ const deleteFolderSync = dirName => {
 // startRecording
 const startRecording = () => {
 	// deleteFolderSync('./src/video');
-	openExec = exec('node ./src/child.js', function (error, stdout, stderr) {
-		if (error) {
-			console.log(error.stack);
-			console.log('Error code: ' + error.code);
-			return;
-		}
-		console.log('使用exec方法输出: ' + stdout);
-		console.log(`stderr: ${stderr}`);
-	});
-	// setTimeout(() => {
-	// 	const PID = execSync("tasklist | grep 'ffmpeg.exe'| awk '{ print $2 }' ").toString();
-	// 	console.log("kill ", PID);
-	// 	execSync('taskkill /F /pid ' + PID)
-	// }, 20000);
+	// openExec = exec('node ./src/child.js', function (error, stdout, stderr) {
+	// 	if (error) {
+	// 		console.log(error.stack);
+	// 		console.log('Error code: ' + error.code);
+	// 		return;
+	// 	}
+	// 	console.log('使用exec方法输出: ' + stdout);
+	// 	console.log(`stderr: ${stderr}`);
+	// });
 
 }
 
@@ -125,6 +120,27 @@ const createWindow = () => {
 	// Open the DevTools.
 	mainWindow.webContents.openDevTools();
 
+	// 关闭前提示
+	mainWindow.on('close', function (e) {
+		const choice = dialog.showMessageBox(this, {
+			type: 'question',
+			buttons: ['最小化', '直接退出'],
+			title: 'Confirm',
+			message: '确定要关闭吗?'
+		});
+		if (choice == 0) {
+			e.preventDefault();
+			mainWindow.minimize();	//调用 最小化实例方法
+		} else {
+			mainWindow = null;
+			const PID = execSync("tasklist | grep 'ffmpeg.exe'| awk '{ print $2 }' ").toString();
+			console.log("kill ", PID);
+			if (PID) execSync('taskkill /F /pid ' + PID)	
+			app.exit();		//exit()直接关闭客户端，不会执行quit();
+		}
+
+	});
+
 	// Emitted when the window is closed.
 	mainWindow.on('closed', () => {
 		// Dereference the window object, usually you would store windows
@@ -133,29 +149,6 @@ const createWindow = () => {
 		mainWindow = null;
 	});
 
-	// 关闭前提示
-	mainWindow.on('close', (e) => {
-		console.log("99999");
-		const PID = execSync("tasklist | grep 'ffmpeg.exe'| awk '{ print $2 }' ").toString();
-		console.log("kill ", PID);
-		execSync('taskkill /F /pid ' + PID)
-		dialog.showMessageBox({
-			type: 'info',
-			title: 'Information',
-			defaultId: 0,
-			message: '确定要关闭吗？',
-			buttons: ['最小化', '直接退出']
-		}, (index) => {
-			if (index === 0) {
-				e.preventDefault();		//阻止默认行为，一定要有
-				// mainWindow.minimize();	//调用 最小化实例方法
-			} else {
-				mainWindow = null;
-				//app.quit();	//不要用quit();试了会弹两次
-				app.exit();		//exit()直接关闭客户端，不会执行quit();
-			}
-		})
-	});
 
 	// 当前的可执行文件所在目录
 	// execFun();
